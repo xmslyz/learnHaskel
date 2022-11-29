@@ -1,0 +1,2 @@
+# learnHaskel
+few haskle tricks
