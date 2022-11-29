@@ -1,0 +1,56 @@
+-- Komentarz
+
+silnia 0 = 1
+silnia n = n*silnia(n-1)
+
+silnia n = product [1..n]
+
+fib 0 = 0
+fib 1 = 1
+fib n = fib(n-1) + fib(n-2)
+
+ack(0,y) = y+1
+ack(x,0) = ack(x-1,1)
+ack(x,y) = ack(x-1,ack(x,y-1))
+
+-- przykład użycia strażników
+sign x | x > 0 = 1
+       | x == 0  =  0
+       | x <  0  = -1
+
+myproduct [] = 1
+myproduct (n:m) = n * myproduct m
+
+mysum [] = 0
+mysum (n:m) = n + mysum m
+
+-- wyrażenia TreeOfMath mają postać: (Sub (Mult (Leaf 5) (Leaf 4)) (Add (Leaf 3) (Leaf 2)))
+data TreeOfMath =
+    Mult TreeOfMath TreeOfMath |
+    Div  TreeOfMath TreeOfMath |
+    Add  TreeOfMath TreeOfMath |
+    Sub  TreeOfMath TreeOfMath |
+    Leaf Float
+
+compute (Mult x y) = compute x * compute y
+compute (Div x y) = compute x / compute y
+compute (Add x y) = compute x + compute y
+compute (Sub x y) = compute x - compute y
+compute (Leaf x) = x
+
+showme (Mult x y) = "(" ++ showme x ++ "*" ++ showme y ++ ")"
+showme (Div x y) = "(" ++ showme x ++ "/" ++ showme y ++ ")"
+showme (Add x y) = "(" ++ showme x ++ "+" ++ showme y ++ ")"
+showme (Sub x y) = "(" ++ showme x ++ "-" ++ showme y ++ ")"
+showme (Leaf x) = show x
+
+qsort [] = []
+qsort (x:xs) = qsort less ++ x:(qsort more)
+    where less = [ a | a <- xs, a <  x ]
+          more = [ a | a <- xs, a >= x ]
+
+-- lista liczb pierwszych
+primes = map head $ iterate (\(x:xs) -> [ y | y<-xs, y `mod` x /= 0 ]) [2..]
+
+-- lista liczb Fibonacciego
+listFib = 1:1:(zipWith (+) listFib (tail listFib))
